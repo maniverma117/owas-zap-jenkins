@@ -57,10 +57,15 @@ Once you've created a context file (let's say it's called `sql_injection.context
 In the Jenkins pipeline, when you run the **ZAP full scan**, you can specify the context as follows:
 
 ```sh
-docker exec owasp zap-full-scan.py \
--t $target \
--r sql_injection_report.html \
--I --context /zap/wrk/sql_injection.context
+docker run -dt --name owasp-zap -p 8080:8080 -p 9090:9090 -p 80:8888 ghcr.io/zaproxy/zaproxy:stable
+
+docker exec owasp-zap mkdir -p /zap/wrk
+
+docker cp sql_injection.context owasp-zap:/zap/wrk
+
+docker exec owasp-zap zap-full-scan.py -t https://dev.shipease.in  -r report.html /zap/wrk   ##for full scan 
+
+docker exec owasp-zap zap-full-scan.py -t https://dev.shipease.in   -r sql_injection_report.html -I --context /zap/wrk/sql_injection.context ##for full scan SQL injections 
 ```
 
 This command tells ZAP to:
