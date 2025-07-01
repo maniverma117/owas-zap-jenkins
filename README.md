@@ -33,6 +33,101 @@ Copy these two files:
 
 #### `grc_zap_sql_scan.py`
 
+```bash
+
+from zapv2 import ZAPv2
+import requests
+import time
+import json
+
+# -------------------------
+# CONFIGURATION
+# -------------------------
+TARGET = 'http://65.0.203.43'
+LOGIN_URL = 'http://65.0.203.43/admin/login'
+USERNAME = 'atishayjain+20@capitall.io'
+PASSWORD = 'Aj@201997'
+ZAP_API_KEY = 'test123'
+ZAP_PROXY = 'http://localhost:8089'
+
+# -------------------------
+# ZAP SETUP
+# -------------------------
+ZAP = ZAPv2(apikey=ZAP_API_KEY, proxies={'http': ZAP_PROXY, 'https': ZAP_PROXY})
+
+# -------------------------
+# Wait for ZAP to be ready
+# -------------------------
+for i in range(30):
+    try:
+        if ZAP.core.version:
+            print(f"[+] ZAP is ready: version {ZAP.core.version}")
+            break
+    except:
+        print("[-] Waiting for ZAP to start...")
+        time.sleep(2)
+else:
+    print("[-] ZAP did not become ready in time.")
+    exit(1)
+
+# -------------------------
+# Login through ZAP Proxy
+# -------------------------
+session = requests.Session()
+session.proxies = {'http': ZAP_PROXY, 'https': ZAP_PROXY}
+
+print("[+] Logging in to app...")
+login_data = {
+    'username': USERNAME,
+    'password': PASSWORD
+}
+resp = session.post(LOGIN_URL, data=login_data)
+
+if 'Welcome' in resp.text or resp.status_code in [200, 302]:
+    print("[+] Login likely successful.")
+else:
+    print("[-] Login may have failed. Status:", resp.status_code)
+    print(resp.text[:300])
+
+time.sleep(3)
+
+# -------------------------
+# Spider the target
+# -------------------------
+print('[+] Starting spider scan...')
+scan_id = ZAP.spider.scan(TARGET)
+while int(ZAP.spider.status(scan_id)) < 100:
+    print(f"  Spider progress: {ZAP.spider.status(scan_id)}%")
+    time.sleep(2)
+print("[+] Spidering complete.")
+
+time.sleep(5)
+
+# -------------------------
+# Active scan
+# -------------------------
+print("[+] Starting active scan...")
+ascan_id = ZAP.ascan.scan(TARGET)
+while int(ZAP.ascan.status(ascan_id)) < 100:
+    print(f"  Scan progress: {ZAP.ascan.status(ascan_id)}%")
+    time.sleep(5)
+print("[+] Active scan complete.")
+
+# -------------------------
+# Save report
+# -------------------------
+print("[+] Writing report files...")
+
+with open('zap_report.html', 'w') as f:
+    f.write(ZAP.core.htmlreport())
+
+with open('zap_alerts.json', 'w') as f:
+    json.dump(ZAP.core.alerts(baseurl=TARGET), f, indent=2)
+
+print("[+] Reports saved: zap_report.html, zap_alerts.json")
+
+```
+
 The working Python script that:
 
 * Logs into your app
