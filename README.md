@@ -1,4 +1,4 @@
-## 🔐 ZAP SQL Injection Scan with Jenkins CI/CD Integration
+# 🔐 ZAP SQL Injection Scan with Jenkins CI/CD Integration
 
 This setup enables automated ZAP scans for SQL injection and other vulnerabilities. It uses:
 
