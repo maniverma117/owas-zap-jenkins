@@ -31,7 +31,7 @@ cd /var/lib/jenkins/zap-script
 
 Copy these two files:
 
-#### `grc_zap_sql_scan.py`
+#### `zap_sql_scan.py`
 
 ```bash
 
