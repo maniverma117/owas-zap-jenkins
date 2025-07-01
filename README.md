@@ -136,6 +136,12 @@ The working Python script that:
 
 > ✅ Make sure it has correct target URL, login URL, username, password, and ZAP API key.
 
+#### `docker run`
+
+```
+docker run -u zap -d --name zap -p 8089:8089 ghcr.io/zaproxy/zaproxy:stable   zap.sh -daemon -port 8089 -host 0.0.0.0   -config api.key=test123   -config api.addrs.addr.name=.*   -config api.addrs.addr.regex=true
+```
+
 #### `docker-compose.yml`
 
 ```yaml
