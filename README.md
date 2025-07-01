@@ -163,10 +163,4 @@ sudo systemctl enable docker
 
 ---
 
-Let me know if you'd like to:
-
-* Push alerts to Slack or email from Jenkins
-* Fail the build on critical vulnerabilities
-* Schedule this to run daily/weekly
-
-You're fully production-ready with this, Mani 👏
+You're fully production-ready with this 👏
