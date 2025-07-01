@@ -1,16 +1,4 @@
 
-# ✅ Final Polished `README.md`
-
-Here’s your updated version with:
-
-* ✅ Clear formatting for code vs explanation
-* ✅ Better file name consistency
-* ✅ Clarified instructions
-* ✅ Minor grammar + markdown improvements
-
----
-
-```markdown
 # 🔐 ZAP SQL Injection Scan with Jenkins CI/CD Integration
 
 This setup enables automated ZAP scans for SQL injection and other vulnerabilities. It uses:
@@ -19,7 +7,6 @@ This setup enables automated ZAP scans for SQL injection and other vulnerabiliti
 - **Python scan script**
 - **Jenkins pipeline** to automate execution and archive reports
 
----
 
 ## 📁 Directory Structure
 
